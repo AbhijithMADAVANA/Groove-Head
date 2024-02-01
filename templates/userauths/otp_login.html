@@ -1,0 +1,37 @@
+
+{% extends 'partials/base.html'%}
+{% load static %}
+{% block  content %}
+
+
+
+<div class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
+    <div class="padding_eight_all bg-white">
+        <div class="heading_s1">
+            <h3 class="mb-30">Confirm Your Account</h3>
+        </div>
+        <div>
+            {%if messages%}
+            {%for message in messages%}
+            <script>alert('{{message}}')</script>
+            {%endfor%}
+            {%endif%}
+            
+            </div> 
+            <form action="{% url 'userauths:otp_verification_login' %}" method="POST" class="mt-4">
+                {% csrf_token %}
+                <div class="form-group text-center">
+                  <label for="otp" class="font-weight-bold" style="padding: 30%;">Enter the OTP</label><br>
+                  <input type="text" class="form-control-lg" style="padding-left: 115px;"  id="otp" name="otp" placeholder="Enter the OTP" required>
+                </div>
+                
+                <div class="text-center mt-4" style="padding-left: 120px;" >
+                  <button type="submit" class="btn btn-primary btn-lg">Verify</button>
+                </div>
+              </form>
+        >
+				
+    </div>
+</div>
+
+{% endblock content %}   
