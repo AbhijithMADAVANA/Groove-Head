@@ -891,7 +891,55 @@ def delete_category_offer(request,id):
     return redirect('admin_panel:category-offers')
 
 
-   
+from django.views import View
+from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
+from django.urls import reverse_lazy
+from django.contrib import messages
+from .models import Banner
+from .forms import BannerForm
+from django.utils import timezone
+  
+# class AdminBannerView(ListView):
+#     model = Banner
+#     template_name = 'admin_panel/admin_banner.html'
+#     context_object_name = 'banners'
+
+class AdminBannerView(View):
+    template_name = 'admin_panel/admin_banner.html'
+
+    def get(self, request):
+        banners = Banner.objects.all()
+        for banner in banners:
+            banner.is_active = banner.update_status()
+            banner.save()
+        return render(request, self.template_name, {'banners': banners})
+
+
+@method_decorator(login_required(login_url='admin_login'), name='dispatch')
+class CreateBannerView(CreateView):
+    model = Banner
+    form_class = BannerForm
+    template_name = 'admin_panel/banner_create.html'
+    success_url = reverse_lazy('admin_banner')
+
+
+@method_decorator(login_required(login_url='admin_login'), name='dispatch')
+class UpdateBannerView(UpdateView):
+    model = Banner
+    form_class = BannerForm
+    template_name = 'admin_panel/banner_update.html'
+    success_url = reverse_lazy('admin_banner')
+
+
+@method_decorator(login_required(login_url='admin_login'), name='dispatch')
+class DeleteBannerView(DeleteView):
+    model = Banner
+    success_url = reverse_lazy('admin_banner')
+
    
    
 

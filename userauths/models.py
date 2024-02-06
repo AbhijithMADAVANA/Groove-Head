@@ -1,7 +1,7 @@
 from typing import Any
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,PermissionsMixin
-
+from app1.utils import generate_ref_code
 # Create your models here.
 
 class MyAccountManager(BaseUserManager):
@@ -53,7 +53,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=50,unique=True)
     email = models.EmailField(max_length=100,unique=True)
     phone_number = models.CharField(max_length=50)
-    
+    code=models.CharField(max_length=12, blank=True, null=True)
 #requierd
     
     date_joined = models.DateField(auto_now_add=True)
@@ -73,6 +73,12 @@ class Account(AbstractBaseUser, PermissionsMixin):
         return self.is_admin
     def has_module_perms(self,app_label):
         return True
+    # def __str__(self):
+    #   return f"{self.user.username}---{self.code}"
 
 
+    def save(self, *args, **kwargs):
+        if self.code is None:
+            self.code = generate_ref_code()
 
+        super().save(*args, **kwargs)

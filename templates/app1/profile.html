@@ -58,6 +58,100 @@
             </div>
         </div>
     </main>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                            <div>
+                                <h4>Your Referral Code</h4>
+                                <br>
+                                <p style="font-weight: 500">
+                                    <input type="hidden" id="coupon-code1" value="{{ user_profile.code }}">
+                                    <span id="coupon-code-span" style="border: 1px solid #121111; padding: 5px; border-radius: 5px; color: rgb(6, 80, 145);">{{ user_profile.code }}</span>
+                                </p>
+                            </div>
+                            <div>
+                                <button id="copy-coupon-button" class="btn btn-primary">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the button with the id 'copy-coupon-button'
+        var copyButton = document.getElementById('copy-coupon-button');
+    
+        // Attach a click event listener to the button
+        copyButton.addEventListener('click', function () {
+            // Find the input with the id 'coupon-code1' to get the coupon code
+            var couponCodeInput = document.getElementById('coupon-code1');
+    
+            // Create a temporary input element
+            var tempInput = document.createElement('input');
+    
+            // Set the value of the temporary input to the coupon code
+            tempInput.value = couponCodeInput.value;
+    
+            // Append the input to the body
+            document.body.appendChild(tempInput);
+    
+            // Select the input's content
+            tempInput.select();
+    
+            // Copy the selected content
+            document.execCommand('copy');
+    
+            // Remove the temporary input element
+            document.body.removeChild(tempInput);
+    
+            // Optionally, provide visual feedback to the user (e.g., show a tooltip)
+            var tooltip = new bootstrap.Tooltip(copyButton, {
+                title: 'Copied!',
+                trigger: 'manual',
+                placement: 'top'
+            });
+    
+            // Show the tooltip
+            tooltip.show();
+    
+            // Hide the tooltip after a brief delay
+            setTimeout(function () {
+                tooltip.hide();
+            }, 1000);
+        });
+    });
+    </script>
+    <br><br>
+    {% for w in wallet_amt %}
+    {% if w.referral == False  %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Enter Referral Code</h4>
+                        <br><br>
+                        <form action="{% url 'app1:referral-coupon' %}" method="post" id="referralForm">
+                            {% csrf_token %}
+                            <label for="referral_code">Referral Code:</label>
+                            <input type="text" id="referral_code" name="referral_code" required>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
 </div> <!-- row.// -->
 </div>
 

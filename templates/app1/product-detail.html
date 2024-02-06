@@ -279,8 +279,8 @@
                                         style="margin-left: -70px;" type="submit">Add To Cart</button>
                                 </form>
                                 <div class="wishlist-compare" style="margin-top: 10px;">
-                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href=""><i class="fi-rs-heart"></i></a>
-                                    <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href="{% url 'app1:add_wishlist' product.pid %}"><i class="fi-rs-heart"></i></a>
+                                    <!-- <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> -->
                                 </div>
                             </div>
                                     <ul class="product-meta font-xs color-grey mt-50">

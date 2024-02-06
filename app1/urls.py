@@ -45,9 +45,11 @@ urlpatterns = [
     path('cancel_order_product/<int:order_id>/',views.cancel_order_product,name='cancel_order_product'),
     path('change_password',views.change_password,name='change_password'),
 
+    path('add_wishlist/<pid>',views.add_wishList,name='add_wishlist'),
+    path('wishlist/',views.wishlist,name='wishlist'),
+    path('remove_from_wishlist/<pid>/',views.remove_from_wishlist, name='remove_from_wishlist'),
 
-
-
+    path('search/',views.search,name='search'),
     path('apply_coupon',views.apply_coupon,name='apply_coupon'),
     path('remove_coupon/',views.remove_coupon, name='remove_coupon'),
 
@@ -56,7 +58,7 @@ urlpatterns = [
     path('wallet',views.wallet_details,name="wallet"),
     path('pay_wallet_details/<str:order_number>/<str:order_total>/', views.pay_wallet_details, name="pay_wallet_details"),
 
-
+    path("referral-coupon/",views.referral_coupon, name="referral-coupon"),
     
 
 

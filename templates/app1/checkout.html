@@ -148,7 +148,11 @@
                           <tr>
                               <td>
                                   <figure class="itemside align-items-center">
+                                    {%if cart_item.variations.image %}
                                       <div class="aside"><img src="{{ cart_item.variations.image.url }}" class="img-sm"></div>
+                                      {%else %}
+                                      <p>no image</p>
+                                      {% endif %}
                                       <figcaption class="info">
                                           <a href="{{ cart_item.variations.get_url }}" class="title text-dark">{{ cart_item.product.title }}</a>
                                           <p class="text-muted small"><br> 

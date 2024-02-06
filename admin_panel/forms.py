@@ -3,6 +3,8 @@ from app1.models import *
 from django.core.exceptions import ValidationError
 from decimal import Decimal
 
+from .models import Banner
+
 class CreateProductForm(forms.ModelForm):
     new_image = forms.ImageField(required=False)  # Add this line for the new image field
     
@@ -67,4 +69,23 @@ class CouponForm(forms.ModelForm):
 
         widgets = {
             'expiration_date': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+
+
+
+
+
+class BannerForm(forms.ModelForm):
+    class Meta:
+        model = Banner
+        fields = ['title', 'image', 'description1', 'description2', 'description3', 'start_date', 'end_date', 'is_active']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'description1': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'description2': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'description3': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'start_date': forms.DateInput(attrs={'class': 'form-control'}),
+            'end_date': forms.DateInput(attrs={'class': 'form-control'}),
         }

@@ -12,26 +12,28 @@
         </div> 
         <section class="home-slider position-relative pt-50">
             <div class="hero-slider-1 dot-style-1 dot-style-1-position-1">
+
+                {% for banner in banners %}
                 <div class="single-hero-slider single-animation-wrap">
                     <div class="container">
                         <div class="row align-items-center slider-animated-1">
                             <div class="col-lg-5 col-md-6">
                                 <div class="hero-slider-content-2">
-                                    <h4 class="animated">Trade-in offer</h4>
-                                    <h2 class="animated fw-900">Supper value deals</h2>
-                                    <h1 class="animated fw-900 text-brand">On all products</h1>
-                                    <p class="animated">Save more with coupons & up to 70% off</p>
-                                    <a class="animated btn btn-brush btn-brush-3" href="shop-product-right.html"> Shop Now </a>
+                                    <h4 class="animated">{{ banner.title }}</h4>
+                                    <h2 class="animated fw-900">{{ banner.description1 }}</h2>
+                                    <h1 class="animated fw-900 text-brand">{{ banner.description2 }}</h1>
+                                    <a class="animated btn btn-brush btn-brush-3" href=""> Shop Now </a>
                                 </div>
                             </div>
                             <div class="col-lg-7 col-md-6">
                                 <div class="single-slider-img single-slider-img-1">
-                                    <img class="animated slider-1-1" src="{% static 'assets/imgs/slider/slider-8.jpg' %}" alt="">
+                                    <img class="animated slider-1-1" src="{{ banner.image.url }}" alt="">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+        
                 <div class="single-hero-slider single-animation-wrap">
                     <div class="container">
                         <div class="row align-items-center slider-animated-1">
@@ -41,7 +43,7 @@
                                     <h2 class="animated fw-900">Fashion Trending</h2>
                                     <h1 class="animated fw-900 text-7">Great Collection</h1>
                                     <p class="animated">Save more with coupons & up to 20% off</p>
-                                    <a class="animated btn btn-brush btn-brush-2" href="shop-product-right.html"> Discover Now </a>
+                                    <a class="animated btn btn-brush btn-brush-2" href=""> Discover Now </a>
                                 </div>
                             </div>
                             <div class="col-lg-7 col-md-6">
@@ -61,7 +63,7 @@
                                     <h2 class="animated fw-900">Big Deals From</h2>
                                     <h1 class="animated fw-900 text-8">Manufacturer</h1>
                                     <p class="animated">Value offer</p>
-                                    <a class="animated btn btn-brush btn-brush-1" href="shop-product-right.html"> Shop Now </a>
+                                    <a class="animated btn btn-brush btn-brush-1" href=""> Shop Now </a>
                                 </div>
                             </div>
                             <div class="col-lg-7 col-md-6">
@@ -72,6 +74,7 @@
                         </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
             <div class="slider-arrow hero-slider-1-arrow"></div>
         </section>
@@ -108,9 +111,9 @@
                                             </a>
                                         </div>
                                         <div class="product-action-1">
-                                            <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
-                                            <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                            <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                            <!-- <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a> -->
+                                            <a aria-label="Add To Wishlist" class="action-btn hover-up" href="{% url 'app1:add_wishlist' p.pid %}"><i class="fi-rs-heart"></i></a>
+                                            <!-- <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> -->
                                         </div>
                                         {% if discount_offer is not None and discount_offer.active %}
                                         <div class="product-badges product-badges-position product-badges-mrg">
@@ -1156,10 +1159,10 @@
                                     </a>
                                 </div>
                                 <div class="product-action-1">
-                                    <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal">
+                                    <!-- <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> -->
 <i class="fi-rs-eye"></i></a>
-                                    <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html" tabindex="0"><i class="fi-rs-heart"></i></a>
-                                    <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html" tabindex="0"><i class="fi-rs-shuffle"></i></a>
+                                    <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="{% url 'app1:add_wishlist' p1.pid %}" tabindex="0"><i class="fi-rs-heart"></i></a>
+                                    <!-- <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html" tabindex="0"><i class="fi-rs-shuffle"></i></a> -->
                                 </div>
                                 {% if discount_offer is not None and discount_offer.active %}
                                         <div class="product-badges product-badges-position product-badges-mrg">
@@ -1172,7 +1175,7 @@
                                                 <span class="hot">-{{ dis.discount_percentage|floatformat:0 }}%</span>
                                             </div>
                                                 {% else %}
-                                                <<div class="product-badges product-badges-position product-badges-mrg">
+                                                <div class="product-badges product-badges-position product-badges-mrg">
                                                     <span class="hot">Hot</span>
                                                 </div>
                                             {% endif %}
@@ -1307,10 +1310,10 @@
                                                     </a>
                                                 </div>
                                                 <div class="product-action-1">
-                                                    <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal">
+                                                    <!-- <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"> -->
 <i class="fi-rs-eye"></i></a>
-                                                    <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                                    <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                                    <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="{% url 'app1:add_wishlist' p.pid %}"><i class="fi-rs-heart"></i></a>
+                                                    <!-- <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> -->
                                                 </div>
                                                 {% if discount_offer is not None and discount_offer.active %}
                                         <div class="product-badges product-badges-position product-badges-mrg">

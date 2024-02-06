@@ -44,7 +44,11 @@
                                 <tbody>
                                     <tr>
                                         {% for cart_item in cart_items %}
+                                        {% if cart_item.variations.image %}
                                         <td class="image product-thumbnail"><img src="{{ cart_item.variations.image.url }}" alt="#"></td>
+                                        {% else %}
+                                        <p>no image</p>
+                                        {% endif %}
                                         <td class="product-des product-name">
                                             <h5 class="product-name"><a href="">{{ cart_item.product.product_name }}</a></h5>
                                             <p class="font-xs">Colour:{{ cart_item.variations.color }}<br>

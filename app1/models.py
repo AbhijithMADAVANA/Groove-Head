@@ -1,3 +1,4 @@
+from django.utils import timezone
 from decimal import Decimal
 from django.db import models
 from shortuuidfield import ShortUUIDField
@@ -387,3 +388,9 @@ class CategoryOffer(models.Model):
         if not isinstance(self.discount_percentage, Decimal):
             self.discount_percentage = Decimal(str(self.discount_percentage))
         super().save(*args, **kwargs)
+
+
+class WishList(models.Model):
+	user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+	product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+	date_added = models.DateField(default=timezone.now)
