@@ -643,7 +643,12 @@ def checkout(request,total=0, quantity=0, cart_items=None):
                 pass
 
         tax = (2 * total) / 100
-        grand_total = total + tax  
+        
+
+        grand_total = round(total + tax)
+  
+
+        # grand_total = total + tax  
 
     except ObjectDoesNotExist:
         pass
@@ -734,8 +739,19 @@ def place_order(request, total=0, quantity=0):
         quantity += cart_item.quantity
     tax = (2 * total) / 100
 
-    coupon_discount = request.session.get('coupon_discount', 0)
-    final_total = (total + tax) - coupon_discount
+    # coupon_discount = request.session.get('coupon_discount', 0)
+    coupon_discount = round(request.session.get('coupon_discount', 0))
+
+
+    # final_total = (total + tax) - coupon_discount
+    import math
+
+    final_total = math.floor((total + tax) - coupon_discount)
+
+    
+
+    
+
 
     if request.method == 'POST':
         form = OrderForm(request.POST)
@@ -1626,31 +1642,29 @@ def wallet_details(request):
 
 
 from datetime import datetime
+from django.shortcuts import render, redirect, HttpResponse
+from django.contrib import messages
+from .models import Order, CartItem, Address, wallet
 
 def pay_wallet_details(request, order_number, order_total):
-    grand_total = order_total
-    order_number = order_number
+    order = Order.objects.filter(order_number=order_number, is_ordered=False).first()
+    if not order:
+        return HttpResponse("Order not found or already processed")
+
+    grand_total = float(order_total)
+    action = request.POST.get('action')
 
     if request.method == 'POST':
-        action = request.POST.get('action')
-        grand_total = request.POST.get('grand_total')
-        order_number = request.POST.get('order_number')
-        print(order_number)
-
+        # Handle wallet payment logic
         try:
             wallets = wallet.objects.get(user=request.user)
         except wallet.DoesNotExist:
             wallets = wallet.objects.create(user=request.user, wallet_amount=0)
             wallets.save()
 
-        if wallets.wallet_amount <= float(grand_total):
+        if wallets.wallet_amount <= grand_total:
             messages.error(request, 'Wallet balance is less than the total amount')
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-        try:
-            order = Order.objects.get(order_number=order_number, is_ordered=False)
-        except Order.DoesNotExist:
-            return HttpResponse("Order not found")
+            return redirect('app1:checkout')
 
         cart_items = CartItem.objects.filter(user=request.user)
         selected_address_id = request.session.get('selected_address_id')
@@ -1676,24 +1690,89 @@ def pay_wallet_details(request, order_number, order_total):
                 tax = (2 * total) / 100
 
                 final_total = (total + tax) - coupon_discount
-                context = {
-                    'order': order,
-                    'cart_items': cart_items,
-                    'total': total,
-                    'tax': tax,
-                    'coupon_discount': coupon_discount,
-                    'final_total': final_total,
-                    'selected_address': selected_address,
-                }
-                return render(request, 'app1/payment.html', context)
+                # Here you may proceed with the wallet payment process and update the wallet balance
+                
+                # Assuming the payment process is successful
+                order.is_ordered = True
+                order.save()
+                
+                # Redirect to the order success page
+                return redirect("app1:order_sucess", id=order.id)
+                
     else:
         # Handle the GET request case
         return HttpResponse("Invalid request method")
 
-    # If the request method is POST and the above conditions are not met,
-    # this means the payment process has been successfully completed,
-    # and a redirect response should be returned.
-    return redirect("app1:order_success", id=order.id)
+
+# def pay_wallet_details(request, order_number, order_total):
+#     grand_total = order_total
+#     order_number = order_number
+
+#     if request.method == 'POST':
+#         action = request.POST.get('action')
+#         grand_total = request.POST.get('grand_total')
+#         order_number = request.POST.get('order_number')
+#         print(order_number)
+
+#         try:
+#             wallets = wallet.objects.get(user=request.user)
+#         except wallet.DoesNotExist:
+#             wallets = wallet.objects.create(user=request.user, wallet_amount=0)
+#             wallets.save()
+
+#         if wallets.wallet_amount <= float(grand_total):
+#             messages.error(request, 'Wallet balance is less than the total amount')
+#             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+#         try:
+#             order = Order.objects.get(order_number=order_number, is_ordered=False)
+#         except Order.DoesNotExist:
+#             return HttpResponse("Order not found")
+
+#         cart_items = CartItem.objects.filter(user=request.user)
+#         selected_address_id = request.session.get('selected_address_id')
+
+#         if selected_address_id is not None:
+#             selected_address = Address.objects.get(pk=selected_address_id)
+#             del request.session['selected_address_id']
+#         else:
+#             selected_address_id = request.POST.get('selected_address')
+#             if selected_address_id is None:
+#                 messages.error(request, 'Choose an address or add address')
+#                 return redirect('app1:checkout')
+#             else:
+#                 selected_address = Address.objects.get(pk=selected_address_id)
+#                 coupon_discount = request.session.get('coupon_discount', 0)
+#                 final_total = 0
+#                 quantity = 0
+#                 total = 0
+#                 tax = 0
+#                 for cart_item in cart_items:
+#                     total += (cart_item.product.price * cart_item.quantity)
+#                     quantity += cart_item.quantity
+#                 tax = (2 * total) / 100
+
+#                 final_total = (total + tax) - coupon_discount
+#                 context = {
+#                     'order': order,
+#                     'cart_items': cart_items,
+#                     'total': total,
+#                     'tax': tax,
+#                     'coupon_discount': coupon_discount,
+#                     'final_total': final_total,
+#                     'selected_address': selected_address,
+#                     'action':action,
+#                 }
+#                 return render(request, 'app1/payment.html', context)
+                
+#     else:
+#         # Handle the GET request case
+#         return HttpResponse("Invalid request method")
+
+#     # If the request method is POST and the above conditions are not met,
+#     # this means the payment process has been successfully completed,
+#     # and a redirect response should be returned.
+#     return redirect("app1:order_success", id=order.id)
 
         
 # def search_view(request):
@@ -1977,3 +2056,27 @@ def referral_coupon(request):
             referral_user.save()
             print(referral_user)
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        
+
+
+# 
+from django.shortcuts import get_object_or_404, render
+from .models import Order, OrderProduct
+
+def invoice(request, order_id):
+    # Retrieve the order or return a 404 page if it doesn't exist
+    order = get_object_or_404(Order, id=order_id)
+    
+    # Fetch order products related to the specific order
+    order_products = OrderProduct.objects.filter(order=order)
+    
+    # Calculate total price for all order products
+    total_price = sum(item.quantity * item.product_price for item in order_products)
+    
+    context = {
+        'order': order,
+        'order_products': order_products,
+        'total_price': total_price,
+    }
+
+    return render(request, 'app1/invoice.html', context)

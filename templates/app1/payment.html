@@ -42,6 +42,8 @@
                 <dl class="dlist-align">
                   <dt>Final Total:</dt>
                   <dd class="text-right text-dark b"><strong>₹{{ final_total }}</strong></dd>
+
+                  <!-- <dd class="text-right text-dark b"><strong>₹{{ final_total|floatformat:0 }}</strong></dd> -->
                 </dl>
                 <hr>
                 <div class="button-container">
@@ -113,7 +115,7 @@
 			<script>
 				var options = {
 					"key": "rzp_test_jsKrhrnKwTVp0i",
-					"amount": parseFloat("{{final_total}}")*100,
+					"amount": Math.floor(parseInt("{{final_total}}")*100),
 					"currency": "INR",
 					"name": "Groove",
 					"description": "Purchase",

@@ -245,7 +245,7 @@ class Payment(models.Model):
 
 
 class orderAddress(models.Model):
-    user = models.ForeignKey(Account, on_delete=models.CASCADE, default='Robin')
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, default='Abhi')
     address_type = models.CharField(max_length=10, choices=[('HOME', 'Home'), ('WORK', 'Work')],default='HOME' )
     first_name = models.CharField(max_length=100, default=None)
     last_name = models.CharField(max_length=100, default=None)

@@ -115,7 +115,7 @@
                                     {% for coupon in coupons %}
                                     <option value="{{ coupon.code }}">
                                         <strong>{{ coupon.code }}</strong> - {{ coupon.description }}<br>__
-                                        Discount: {{ coupon.discount }}%<br>__
+                                        Discount: {{ coupon.discount |floatformat:"0"}}%<br>__
                                         Purchase Range: ₹{{ coupon.minimum_purchase_value }} to ₹{{ coupon.maximum_purchase_value }}
                                     </option>
                                     {% endfor %}
@@ -195,7 +195,9 @@
                                     
                                     <p>Tax: ₹ {{ tax }}</p> <br>
                                     <span id="coupon-discount-display"></span><br>
-                                      <var class="price" id="grand-total">Grand Total: ₹{{ grand_total }}</var> 
+                                      <var class="price" id="grand-total">Grand Total: ₹{{ grand_total|floatformat:"0" }}</var>
+
+                                      <!-- <var class="price" id="grand-total">Grand Total: ₹{{ grand_total|floatformat:"0" }}</var>  -->
                                   </div>
                               </td>
                           </tr>
@@ -293,7 +295,10 @@
             resetDiscountUI();
 
             // Make an AJAX request to remove coupon data from the session on the server side
-            var grandTotal = parseFloat('{{ grand_total }}');
+            //var grandTotal = Math.floor(parseFloat('{{ grand_total }}'));
+
+            var grandTotal = Math.round(parseFloat('{{ grand_total }}'));
+
 
             $.ajax({
                 method: 'POST',
@@ -320,7 +325,7 @@
         // Function to update UI elements with the discount value
         function updateDiscountUI(discount) {
             $('#coupon-discount').text('$' + discount);
-            $('#coupon-discount-display').text(' Discount: ₹' + discount.toFixed(2));
+            $('#coupon-discount-display').text(' Discount: ₹' + Math.floor(discount));
             updateFinalTotalUI(discount);
         }
 
@@ -333,7 +338,8 @@
 
         // Function to update the final total UI element
         function updateFinalTotalUI(discount) {
-            var grandTotal = parseFloat('{{ grand_total }}');
+            //var grandTotal = Math.floor(parseFloat('{{ grand_total }}'));
+            var grandTotal = Math.round(parseFloat('{{ grand_total }}'));
             var finalTotal = grandTotal - discount;
             $('#final-total').text('$' + finalTotal);
             $('#grand-total').text('Grand Total ₹ ' + finalTotal);

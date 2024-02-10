@@ -53,7 +53,7 @@ urlpatterns = [
     path('apply_coupon',views.apply_coupon,name='apply_coupon'),
     path('remove_coupon/',views.remove_coupon, name='remove_coupon'),
 
-     
+    path('invoice/<int:order_id>/',views.invoice,name='invoice'),  
 
     path('wallet',views.wallet_details,name="wallet"),
     path('pay_wallet_details/<str:order_number>/<str:order_total>/', views.pay_wallet_details, name="pay_wallet_details"),
@@ -61,6 +61,6 @@ urlpatterns = [
     path("referral-coupon/",views.referral_coupon, name="referral-coupon"),
     
 
-
+    
     
 ]

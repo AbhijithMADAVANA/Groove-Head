@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .bill {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .bill-details {
+            margin-bottom: 20px;
+        }
+        .product-list {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .product-list th, .product-list td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        .product-list th {
+            background-color: #f2f2f2;
+        }
+        .total {
+            text-align: right;
+        }
+        .print-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        @media print {
+            /* Adjust styles for printing */
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .bill {
+                width: 800px;
+                margin: 0;
+                padding: 0;
+                border: none;
+                border-radius: 0;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="bill mt-5">
+        <div class="header">
+            <h1>Order Invoice</h1>
+        </div>
+        <div class="bill-details">
+            <p><strong>Order ID:</strong> ORD{{ order.order_number }}</p>
+            <p><strong>Order Date:</strong> {{ order.created_at }}</p>
+            <p><strong>Customer Name:</strong> {{ order.user.username }}</p>
+            <p><strong>Payment method:</strong> {{ order.payment.payment_method }}</p>
+            <p><strong>Address:</strong> {{ order.selected_address.address_line_1 }}</p>
+            <p><strong>Phone:</strong> {{ order.selected_address.phone }}</p>
+            <p><strong>City:</strong> {{ order.selected_address.city }}</p>
+            <p><strong>Pincode:</strong> {{ order.selected_address.postal_code }}</p>
+        </div>
+        <table class="product-list">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order_products %}
+                <tr>
+                    <td>{{ item.product.title }}</td>
+                    <td>₹{{ item.product_price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.order.order_total }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        {% if coupon %}
+        <div class="total">
+            <p><strong>Coupon:</strong> {{ coupon }}</p>
+        </div>
+        {% endif %}
+        <div class="total">
+            <p><strong>Order Total:</strong> ₹{{  order.order_total  }}</p>
+        </div>
+        <div class="print-button">
+            <button onclick="printBill()" class="btn btn-dark h-auto border rounded">Print</button>
+        </div>
+    </div>
+    <script>    
+        function printBill() {
+            document.querySelector('.print-button').style.display = 'none';
+            window.print();
+            document.querySelector('.print-button').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

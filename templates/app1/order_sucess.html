@@ -40,6 +40,13 @@
             {% endfor %}
           </ul>
         </div>
+        <div class="col-12 mt-3">
+          <div class="card-footer text-muted">
+              <a href="{% url 'app1:invoice' order.id %}" class="btn btn-primary">Download Invoice</a>
+              <a href="{% url 'app1:index' %}" class="btn btn-secondary">Back to Shop</a>
+          </div>
+      </div>
+      
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">Close</button>
         </div>

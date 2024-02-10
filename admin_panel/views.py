@@ -45,33 +45,46 @@ def dashboard(request):
 
     total_users_count = int(Account.objects.count())
     product_count = Product.objects.count()
-
+    orders = Order.objects.all()
     total_users_count = int(Account.objects.count())
     product_count = Product.objects.count()
-    # user_order = Order.objects.filter(is_ordered=True).count()
+    user_order = Order.objects.filter(is_ordered=True).count()
     # # for i in monthly_order_totals:
-    # completed_orders = Order.objects.filter(is_ordered=True)
+    completed_orders = Order.objects.filter(is_ordered=True)
 
     monthly_totals_dict = DefaultDict(float)
+    total_revenue = 0
+    for order in orders:
+        if order.status == 'Completed':  # Make sure status value matches exactly
+        # Handle null order_total
+            order_total = order.order_total 
+            total_revenue += order_total
+
+    revenue = int(total_revenue)
+
 
     # Iterate over completed orders and calculate monthly totals
-    # for order in completed_orders:
-    #     order_month = order.created_at.strftime('%m-%Y')
-    #     monthly_totals_dict[order_month] += float(order.order_total)
+    for order in completed_orders:
+        order_month = order.created_at.strftime('%m-%Y')
+        monthly_totals_dict[order_month] += float(order.order_total)
 
     print(monthly_totals_dict)
     months = list(monthly_totals_dict.keys())
     totals = list(monthly_totals_dict.values())
 
     variants = ProductVariant.objects.all()
-
+    last_orders = Order.objects.order_by('-id')[:5]
+    
     context = {
         'total_users_count': total_users_count,
         'product_count': product_count,
-        # 'order': user_order,
+        'order': user_order,
         'variants': variants,
         'months': months,
         'totals': totals,
+        'last_orders':last_orders,
+        'user_order':user_order,
+        'revenue':revenue,
 
 
     }
@@ -891,22 +904,16 @@ def delete_category_offer(request,id):
     return redirect('admin_panel:category-offers')
 
 
-from django.views import View
-from django.views.generic.list import ListView
+from django.urls import path, reverse_lazy
+from django.views.generic import View
+from django.shortcuts import render
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-
-from django.urls import reverse_lazy
-from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from .models import Banner
 from .forms import BannerForm
-from django.utils import timezone
   
-# class AdminBannerView(ListView):
-#     model = Banner
-#     template_name = 'admin_panel/admin_banner.html'
-#     context_object_name = 'banners'
+
 
 class AdminBannerView(View):
     template_name = 'admin_panel/admin_banner.html'
@@ -918,14 +925,12 @@ class AdminBannerView(View):
             banner.save()
         return render(request, self.template_name, {'banners': banners})
 
-
 @method_decorator(login_required(login_url='admin_login'), name='dispatch')
 class CreateBannerView(CreateView):
     model = Banner
     form_class = BannerForm
     template_name = 'admin_panel/banner_create.html'
     success_url = reverse_lazy('admin_banner')
-
 
 @method_decorator(login_required(login_url='admin_login'), name='dispatch')
 class UpdateBannerView(UpdateView):
@@ -934,12 +939,10 @@ class UpdateBannerView(UpdateView):
     template_name = 'admin_panel/banner_update.html'
     success_url = reverse_lazy('admin_banner')
 
-
 @method_decorator(login_required(login_url='admin_login'), name='dispatch')
 class DeleteBannerView(DeleteView):
     model = Banner
     success_url = reverse_lazy('admin_banner')
-
    
    
 
