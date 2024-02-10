@@ -1704,7 +1704,9 @@ def pay_wallet_details(request, order_number, order_total):
         return HttpResponse("Invalid request method")
     
 def abc():
-   pass    
+   pass 
+def dfs():
+    pass   
 
 
 # def pay_wallet_details(request, order_number, order_total):
