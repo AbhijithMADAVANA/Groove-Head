@@ -1702,6 +1702,9 @@ def pay_wallet_details(request, order_number, order_total):
     else:
         # Handle the GET request case
         return HttpResponse("Invalid request method")
+    
+def abc():
+   pass    
 
 
 # def pay_wallet_details(request, order_number, order_total):
