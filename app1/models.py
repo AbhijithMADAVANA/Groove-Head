@@ -19,17 +19,7 @@ STATUS_CHOICE = (
    
 
 )
-# STATUS = (
 
-#     ("draft","Draft"),
-#     ("disabled","Disabled"),
-#     ("rejected","Rejected"),
-#     ("in_review","In review"),
-   
-   
-    
-
-# )
 RATING = (
   (1,"⭐☆☆☆☆"),
   (2,"⭐⭐☆☆☆"),
@@ -169,7 +159,7 @@ class VariantImages(models.Model):
     # def __str__(self):
     #     return str(self.product)
     def __str__(self):
-        return f"Variant Image: {self.pk}"  # Changed the __str__ method to display image ID or any other identifier
+        return f"Variant Image: {self.pk}"  
 
 
 
@@ -179,17 +169,7 @@ class VariantImages(models.Model):
 
     ####################cart, Order, OrderItems, address################ 
 
-# class Cart(models.Model):
-#     user = models.OneToOneField(Account, on_delete=models.CASCADE)
-#     products = models.ManyToManyField(Product, through='CartItem')
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     modified_at = models.DateTimeField(auto_now=True)
 
-#     def get_absolute_url(self):
-#         return reverse('cart_detail')  # Change 'cart_detail' to the URL name of your cart detail view
-
-#     def __str__(self):
-#         return f"Cart for {self.user.email}"
 class Cart(models.Model):
     cart_id=models.CharField(max_length=250,blank=True)
     date_added=models.DateField(auto_now_add=True)

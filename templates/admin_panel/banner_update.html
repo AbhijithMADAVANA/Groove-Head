@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="post" enctype="multipart/form-data" action="{% url 'update_banner' banner.id %}">
+                    <form method="post" enctype="multipart/form-data" action="{% url 'admin_panel:update_banner' banner.id %}">
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-lg-6">
@@ -78,7 +78,7 @@
                     </form>
 
                     <div class="mb-4">
-                        <a href="{% url 'delete_banner' banner.id %}"><button class="btn btn-danger btn-sm rounded col-lg-12">Delete</button></a>
+                        <a href="{% url 'admin_panel:delete_banner' banner.id %}"><button class="btn btn-danger btn-sm rounded col-lg-12">Delete</button></a>
                     </div>
                 </div>
             </div>

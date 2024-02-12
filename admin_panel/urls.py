@@ -72,8 +72,9 @@ urlpatterns=[
     path('admin_banner/', AdminBannerView.as_view(), name='admin_banner'),
     path('create_banner/', CreateBannerView.as_view(), name='create_banner'),
     path('update_banner/<int:pk>/', UpdateBannerView.as_view(), name='update_banner'),
-    path('delete_banner/<int:pk>/', DeleteBannerView.as_view(), name='delete_banner'),
+     path('delete_banner/<int:banner_id>/', DeleteBannerView.as_view(), name='delete_banner'),
 
+    
 
 
 ]

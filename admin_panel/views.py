@@ -55,8 +55,8 @@ def dashboard(request):
     monthly_totals_dict = DefaultDict(float)
     total_revenue = 0
     for order in orders:
-        if order.status == 'Completed':  # Make sure status value matches exactly
-        # Handle null order_total
+        if order.status == 'Completed':  
+        
             order_total = order.order_total 
             total_revenue += order_total
 
@@ -222,12 +222,12 @@ def add_product(request):
         product.save()
 
         # Handling additional images
-        additional_image_count = 5  # Change this to the desired count of additional images
+        additional_image_count = 5  
         for i in range(1, additional_image_count + 1):
             image_field_name = f'product_image{i}'
             image = request.FILES.get(image_field_name)
             if image:
-                ProductImages.objects.create(product=product, images=image)  # Change 'images' to the actual field name
+                ProductImages.objects.create(product=product, images=image)  
 
         return redirect('admin_panel:admin_products_list')
     else:
@@ -280,7 +280,7 @@ def admin_add_category(request):
             cat_data = Category(title=cat_title, image=request.FILES.get('category_image'))
             cat_data.save()
             messages.success(request, 'Category added successfully.')
-            return redirect('admin_panel:admin_add_category')  # Replace 'your_redirect_url_name' with your desired URL
+            return redirect('admin_panel:admin_add_category')  
         
     return render(request, 'admin_panel/admin_add_category.html')
 
@@ -288,7 +288,7 @@ def admin_category_edit(request, cid):
     if not request.user.is_authenticated:
         return redirect('admin_auth:admin_login')
 
-    # Using get_object_or_404 to get the Category or return a 404 response if it doesn't exist
+   
     categories = get_object_or_404(Category, cid=cid)
 
     if request.method == 'POST':
@@ -305,10 +305,10 @@ def admin_category_edit(request, cid):
         # Save the changes to the database
         categories.save()
 
-        # Redirect to the category list page after successful update
+        
         return redirect('admin_panel:admin_category_list')
 
-    # If the request method is GET, render the template with the category details
+    
     context = {
         "categories_title": categories.title,
         "categories_image": categories.image,
@@ -403,7 +403,7 @@ def variant_list(request):
 def add_variant(request):
     if not request.user.is_superadmin:
         return redirect('admin_auth:admin_login')
-    additional_image_count = 3  # Define the count of additional images here
+    additional_image_count = 3  
 
     if request.method == 'POST':
         variant_form = ProductVariantForm(request.POST, request.FILES)
@@ -418,7 +418,7 @@ def add_variant(request):
                 if image:
                     VariantImages.objects.create(productvariant=variant_instance, images=image)
 
-            return redirect('admin_panel:variant-list')  # Adjust the redirect URL as needed
+            return redirect('admin_panel:variant-list') 
     else:
         variant_form = ProductVariantForm()
 
@@ -463,7 +463,7 @@ def order_list(request):
     if not request.user.is_authenticated:
         return redirect('admin_panel:dashboard')
     
-    orders = Order.objects.filter(is_ordered=True).order_by('-created_at')  # Fetch all orders from the Order model
+    orders = Order.objects.filter(is_ordered=True).order_by('-created_at')  
     context = {'orders': orders}
     return render(request, 'admin_panel/orderlist.html', context)
 
@@ -473,7 +473,7 @@ def ordered_product_details(request, order_id):
         return redirect('admin_panel:dashboard')
     
     orders = Order.objects.get(id=order_id)
-    print(orders)
+    
     order_instance = Order.objects.get(id=order_id)
 
 # Retrieving related OrderProduct instances using the default reverse relation
@@ -529,8 +529,7 @@ def add_coupon(request):
         form = CouponForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('admin_panel:list_coupons')  # Redirect to the list of coupons or another page
-    else:
+            return redirect('admin_panel:list_coupons') 
         form = CouponForm()
     
     return render(request, 'admin_panel/add coupons.html', {'form': form})
@@ -551,7 +550,7 @@ def delete_coupon(request, id):
         coupon.is_active=False
         coupon.save()
     except Coupon.DoesNotExist:
-        # Handle the case where the coupon with the given ID doesn't exist
+        
         pass
 
     return redirect('admin_panel:list_coupons')
@@ -580,7 +579,7 @@ def product_offers(request):
     offers=ProductOffer.objects.all()
     try:
         product_offer = ProductOffer.objects.get(active=True)
-        print(product_offer)
+        
     except ProductOffer.DoesNotExist:
        
         product_offer = None
@@ -725,14 +724,14 @@ def category_offers(request):
     for category in categories:
         try:
             category_offers = CategoryOffer.objects.filter(category=category, active=True)
-            print("hello",category_offers)
+            
         except CategoryOffer.DoesNotExist:
             category_offers = None
 
         products = Product.objects.filter(category=category, status=True)
         vr1 = ProductVariant.objects.filter(product__category=category)
 
-        print(products)
+        
 
         for product in products:
             for category_offer in category_offers:
@@ -751,51 +750,6 @@ def category_offers(request):
     }
     return render(request, 'admin_panel/category_offers.html', context)
 
-# def category_offers(request):
-#     if not request.user.is_superadmin:
-#         return redirect('admin_auth:admin_login')
-#     offers = CategoryOffer.objects.all()
-#     categories = Category.objects.all()
-
-#     for category in categories:
-#         try:
-#             category_offer = CategoryOffer.objects.filter(category=category, active=True)
-#             print(category_offer)
-#         except CategoryOffer.DoesNotExist:
-#             category_offer = None
-#         products = Product.objects.filter(category=category, status=True)
-#         vr1 = ProductVariant.objects.filter(product__category=category)
-
-#         print(products)
-        
-#         for product in products:
-#             if category_offer:
-#                 for cat in category_offer:
-            
-
-            
-#                     discounted_price = product.old_price - (product.old_price * cat.discount_percentage / 100)
-#                     product.price = max(discounted_price, Decimal('0.00'))  
-                
-#             else:
-#                 product.price=product.old_price
-#             product.save()
-
-
-        
-#         for v1 in vr1:
-#             if category_offer:
-#                 discounted_price = v1.old_price - (v1.old_price * category_offer.discount_percentage / 100)
-#                 v1.price = max(discounted_price, Decimal('0.00')) 
-#             else:
-            
-#                 v1.price = v1.old_price
-                
-
-#     context = {
-#         'offers': offers
-#     }
-#     return render(request, 'admin_panel/category_offers.html', context)
 
 
 
@@ -912,7 +866,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from .models import Banner
 from .forms import BannerForm
-  
+from django.urls import reverse  
 
 
 class AdminBannerView(View):
@@ -930,19 +884,29 @@ class CreateBannerView(CreateView):
     model = Banner
     form_class = BannerForm
     template_name = 'admin_panel/banner_create.html'
-    success_url = reverse_lazy('admin_banner')
+    success_url = reverse_lazy('admin_panel:admin_banner')
 
 @method_decorator(login_required(login_url='admin_login'), name='dispatch')
 class UpdateBannerView(UpdateView):
     model = Banner
     form_class = BannerForm
     template_name = 'admin_panel/banner_update.html'
-    success_url = reverse_lazy('admin_banner')
+    success_url = reverse_lazy('admin_panel:admin_banner')
+
 
 @method_decorator(login_required(login_url='admin_login'), name='dispatch')
-class DeleteBannerView(DeleteView):
-    model = Banner
-    success_url = reverse_lazy('admin_banner')
+class DeleteBannerView(View):
+    def get(self, request, banner_id):
+        try:
+            banner = Banner.objects.get(id=banner_id)
+            banner.delete()
+            # Redirect back to some URL after successful deletion
+            return HttpResponseRedirect(reverse('admin_panel:admin_banner'))  # Redirect to admin_banner page
+        except Banner.DoesNotExist:
+            # Handle case where banner with given ID does not exist
+            return HttpResponseRedirect(reverse('admin_panel:admin_banner'))  # Redirect to admin_banner page
+
+
    
    
 

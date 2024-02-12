@@ -6,7 +6,7 @@ from decimal import Decimal
 from .models import Banner
 
 class CreateProductForm(forms.ModelForm):
-    new_image = forms.ImageField(required=False)  # Add this line for the new image field
+    new_image = forms.ImageField(required=False) 
     
     class Meta:
         model = Product

@@ -12,7 +12,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from app1.models import *
 User=settings.AUTH_USER_MODEL
-# Create your views here.
+
 app_name = "userauths"
 
 
@@ -22,7 +22,7 @@ def register_view(request):
         
         if form.is_valid():
             
-            # new_user = form.save()
+            
             username = form.cleaned_data.get("username")
             
             email = form.cleaned_data.get("email")
@@ -47,52 +47,7 @@ def register_view(request):
     context = {'form': form}
     return render(request, 'userauths/sign-up.html', context)
 
-# def login_view(request):
-#     if request.user.is_authenticated:
-#         messages.warning(request,f"Hey you are already Logged In.")
-#         return redirect("app1:index")
-    
-#     if request.method =="POST":
-#         email = request.POST.get("email")
-#         password = request.POST.get("password")
-        
-#         # try:
-#         #     user=Account.objects.get(email=email)
-#         #     print("hello")
-#         # except: 
-#         #     messages.warning(request,f"user with {email} does not exist")
 
-#         # user = authenticate(request,email=email,password=password)
-
-#         # if user is not None:
-#         #     login(request,user)
-#         #     messages.success(request,"you are logged In.")
-#         #     return redirect("app1:index")
-
-#         # else:
-#         #     messages.warning(request,"User does not Exist,Create an account")  
-
-#         try:
-#           user = Account.objects.get(email=email)
-#           user_authenticated = authenticate(email=email, password=password)
-#           print(user_authenticated)
-        
-
-#           if user_authenticated is not None:
-#               login(request, user_authenticated)
-           
-#               messages.success(request, 'Login successful.')
-#               return redirect("app1:index")  # Redirect to the desired page after successful login
-#           else:
-#               messages.warning(request, 'Username or Password is incorrect.')
-
-#         except:
-#           messages.warning(request, f'User with {email} doesnot exists')
-#     context={
-
-#     }  
-          
-#     return render(request,"userauths/sign-in.html",context)
 def send_otp(request):
     s=""
     for x in range(0,4):
@@ -184,7 +139,7 @@ def login_otp(request):
         email = request.POST.get('email')
         
         request.session["email"]=email
-        print(email)
+        
         if not Account.objects.filter(email=email).exists():
             messages.error(request, "Invalid Email Adress")
             return redirect('userauths:login_otp')
@@ -212,40 +167,7 @@ def send_otp_login(request):
     send_mail("otp for sign up",s,'groovehead17@gmail.com',[request.session['email']],fail_silently=False)
     return render(request,"userauths/otp_login.html")
 
-# def otp_verification_login(request):
-#     if request.method == 'POST':
-#         otp_ = request.POST.get("otp")
-#         try:
-#             if otp_ == request.session["otp"]:
-               
-#                 request.session.pop('otp', None)
 
-               
-#                 user = Account.objects.get(email=request.session.get("email"))
-
-                
-#                 user.is_active = True
-                
-#                 user.save()
-#                 login(request, user,backend='django.contrib.auth.backends.ModelBackend')
-
-#                 messages.success(request, 'Account activated successfully.')
-#                 redirect_url = reverse('app1:index')
-#                 return HttpResponseRedirect(redirect_url) 
-#             else:
-#                 messages.error(request, "OTP doesn't match.")
-                
-
-#             #     messages.success(request, 'Account activated successfully.')
-#             #     redirect_url = reverse('app1:index')
-#             #     return HttpResponseRedirect(redirect_url)  # Replace '/app1/index' with your actual URL
-#             # else:
-#             #     messages.error(request, "OTP doesn't match")
-#             #     return render(request, 'userauths/otp_login.html')
-#         except KeyError:
-#             messages.error(request, 'Session expired. Please try logging in again.')
-
-#     return HttpResponseBadRequest("Invalid request method")
     
 
 
@@ -257,7 +179,7 @@ def otp_verification_login(request):
                 email = request.session.get("email")
                 user = Account.objects.get(email=email)
 
-                # Remove 'otp' from the session
+                
                 request.session.pop('otp', None)
 
                 user.is_active = True

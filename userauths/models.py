@@ -73,8 +73,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
         return self.is_admin
     def has_module_perms(self,app_label):
         return True
-    # def __str__(self):
-    #   return f"{self.user.username}---{self.code}"
+    
 
 
     def save(self, *args, **kwargs):

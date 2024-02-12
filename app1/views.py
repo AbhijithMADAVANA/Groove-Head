@@ -41,7 +41,6 @@ def is_not_empty_or_whitespace(value):
 
 
 
-# Create your views here.
 
 
 
@@ -98,8 +97,8 @@ def product_list(request):
     products = Product.objects.filter(status=True)
     categories = Category.objects.all()
 
-    # Specify the number of products to display per page
-    per_page = 10  # Adjust this value based on your requirements
+    
+    per_page = 10  
     paginator = Paginator(products, per_page)
 
     page = request.GET.get('page')
@@ -115,14 +114,6 @@ def product_list(request):
     except CategoryOffer.DoesNotExist:
         discounted_offer = None
 
-    # if discounted_offer:
-    #     for dis in discounted_offer:
-    #         products_with_discount = Product.objects.filter(category=dis.category, status=True)
-    #         current_date = timezone.now()
-    #         if current_date > dis.end_date:
-    #             dis.active = False
-    #             dis.save()
-    
     context = {
         "products": products,
         "categories": categories,
@@ -182,88 +173,12 @@ def category_product_list(request, cid):
     return render(request,'app1/category_product_list.html', context)
 
 
-# def product_detail(request, pid):
-#     product = get_object_or_404(Product, pid=pid)
-#     p_image = product.p_images.all()
-#     category = Category.objects.all()
-#     products = Product.objects.filter(category=product.category).exclude(pid=pid)[:4]
-#     context = {
-#         "product": product,
-#         "p_image": p_image,
-#         "category": category,
-#         "products": products,
 
 
 
-#     }
-
-#     return render(request, 'app1/product_detail.html', context)
-
-# def product_detail(request, pid):
-#     try:
-#         product = Product.objects.get(pid=pid)
-#         p_images = product.p_images.all()
-#         variants = ProductVariant.objects.filter(product=product)
-#         distinct_colors = variants.values_list('color__name', flat=True).distinct()
-
-#         selected_color = request.GET.get('selected_color')
-#         selected_variants = None
-#         selected_variant_images = None
-
-#         # Defaulting to the first available variant or color if none is selected
-#         try:
-        
-#             discount_offer = ProductOffer.objects.get(active=True)
-#         except ProductOffer.DoesNotExist:
-#             discount_offer = None
-    
     
                         
-#         try:
-            
-#             discounted_offer = CategoryOffer.objects.filter(active=True)
-#         except ProductOffer.DoesNotExist:
-#             discounted_offer = None
-#         if discounted_offer:
-#             for dis in discounted_offer:
-#                 products_with_discount = Product.objects.filter(category=dis.category, status=True)
-#                 current_date = timezone.now()
-#                 if current_date > dis.end_date:
-#                     dis.active = False
-#                     dis.save()
 
-
-
-
-#         if not selected_color:
-#             default_variant = variants.first()
-#             if default_variant:
-#                 selected_color = default_variant.color.name
-#                 selected_variants = variants.filter(color__name=selected_color)
-#                 selected_variant_images = default_variant.v_images.all()
-#         else:
-#             sel_color = Color.objects.get(name=selected_color)
-#             selected_variants = variants.filter(color=sel_color)
-
-#             if selected_variants.exists():
-#                 selected_variant = selected_variants.first()
-#                 selected_variant_images = selected_variant.v_images.all()
-
-#     except Product.DoesNotExist:
-#         return HttpResponse("Product not found", status=404)
-
-#     context = {
-#         "product": product,
-#         "p_images": p_images,
-#         "distinct_colors": distinct_colors,
-#         "variants": variants, 
-#         "selected_color": selected_color,
-#         "selected_variants": selected_variants,
-#         "selected_variant_images": selected_variant_images,
-#         "discount_offer":discount_offer,
-#         "discounted_offer":discounted_offer
-#     }
-#     return render(request, 'app1/product-detail.html', context)
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.timezone import now  # Update the import statement
@@ -281,7 +196,7 @@ def product_detail(request, pid):
         selected_variants = None
         selected_variant_images = None
 
-        # Defaulting to the first available variant or color if none is selected
+        
         try:
             discount_offer = ProductOffer.objects.get(active=True)
         except ProductOffer.DoesNotExist:
@@ -377,7 +292,7 @@ def add_cart(request, pid):
        return HttpResponseRedirect(reverse('app1:product-detail', args=(pid,)))
    
    else:
-    print("hsabfhsabbsvjncjxzncja") 
+    
     sel=Color.objects.get(name=color)
     print(sel)
     print(color)
@@ -427,7 +342,7 @@ def add_cart(request, pid):
             try:
                 cart = Cart.objects.get(cart_id=_cart_id(request))
             except Cart.MultipleObjectsReturned:
-                # If multiple records exist, choose the first one
+               
                 cart = Cart.objects.filter(cart_id=_cart_id(request)).first()
             except Cart.DoesNotExist:
                 cart = Cart.objects.create(cart_id=_cart_id(request))
@@ -488,9 +403,7 @@ def remove_cart_item(request, pid, cart_item_id):
         # Delete the cart item
         cart_item.delete()
     except CartItem.DoesNotExist:
-        pass  # Handle the case where the cart item doesn't exist
-
-    # Redirect back to the shopping cart page
+        pass  
     return redirect('app1:shopping_cart')
 
 
@@ -506,13 +419,13 @@ def newcart_update(request):
     
     if request.method == 'POST' and request.user.is_authenticated:
         prod_id = request.POST.get('product_id')
-        print(prod_id)
+        
         cart_item_id = int(request.POST.get('cart_id'))
         qty=int(request.POST.get('qty'))
         counter=int(request.POST.get('counter'))
-        print(qty)
+        
         product = get_object_or_404(Product, pid=prod_id)
-        print(product)
+        
 
         try:
             cart_item = CartItem.objects.get(product=product, user=request.user, id=cart_item_id)
@@ -521,9 +434,9 @@ def newcart_update(request):
             return JsonResponse({'status': 'error', 'message': 'Cart item not found'})
         
         if cart_item.variations:
-            print('hjsgfgfhghjfg')
+            
             print(cart_item.variations)
-            variation = cart_item.variations  # Access the variation associated with the cart item
+            variation = cart_item.variations  
             if cart_item.quantity < variation.stock_count:
                 cart_item.quantity += 1
                 cart_item.save()
@@ -569,7 +482,7 @@ def remove_cart_item_fully(request):
             cart_item = CartItem.objects.get(product=product, user=request.user, id=cart_item_id)
             cart_items = CartItem.objects.filter(user=request.user)
 
-            # Check if the cart item exists and belongs to the logged-in user
+            
             if cart_item.quantity > 1:
                 cart_item.quantity -= 1
                 cart_item.save()
@@ -626,7 +539,7 @@ def checkout(request,total=0, quantity=0, cart_items=None):
            coupons = Coupon.objects.filter(is_active=True)
            
            coupons = [coupon for coupon in coupons if coupon.validate_usage_count(request.user)]
-           print(coupons)
+           
           
         else:
             addresses = []
@@ -648,7 +561,7 @@ def checkout(request,total=0, quantity=0, cart_items=None):
         grand_total = round(total + tax)
   
 
-        # grand_total = total + tax  
+       
 
     except ObjectDoesNotExist:
         pass
@@ -717,10 +630,10 @@ def add_address(request):
             )
             address.save()
             messages.success(request, 'Address added successfully.')
-            # Redirect to the manage addresses page after adding the new address
+            
             return redirect('app1:user_address')
 
-    # Add this return statement for the else block
+   
     return render(request, 'app1/add_address.html')
 
 
@@ -739,11 +652,11 @@ def place_order(request, total=0, quantity=0):
         quantity += cart_item.quantity
     tax = (2 * total) / 100
 
-    # coupon_discount = request.session.get('coupon_discount', 0)
+    
     coupon_discount = round(request.session.get('coupon_discount', 0))
 
 
-    # final_total = (total + tax) - coupon_discount
+    
     import math
 
     final_total = math.floor((total + tax) - coupon_discount)
@@ -818,223 +731,9 @@ def place_order(request, total=0, quantity=0):
         else:
             return redirect('app1:checkout')
     else:
-        # Handle GET request
-        # You can render a template for the GET request or return an appropriate response
-        # For now, let's return an empty HTTP response
-        # return HttpResponse("GET request is not allowed for this view")
+        
         return redirect('app1:index')
-# def place_order(request, total=0, quantity=0):
-#     current_user = request.user
-    
-#     cart_items = CartItem.objects.filter(user=current_user)
-#     cart_count = cart_items.count()
-#     if cart_count <= 0:
-#         return redirect('app1:index')
-    
-#     final_total = 0
-#     tax = 0
-#     for cart_item in cart_items:
-#         total += (cart_item.variations.price * cart_item.quantity)
-#         quantity += cart_item.quantity
-#     tax = (2 * total) / 100
 
-#     coupon_discount = request.session.get('coupon_discount', 0)
-#     final_total = (total + tax)-coupon_discount
-
-#     if request.method == 'POST':
-#         form = OrderForm(request.POST)
-#         if form.is_valid():
-            
-            
-#             data = form.save(commit=False)
-#             data.user = current_user
-#             data.discount=coupon_discount
-#             data.order_total = final_total
-#             data.tax = tax
-#             data.ip = request.META.get('REMOTE_ADDR')
-            
-        
-#             selected_address_id = request.session.get('selected_address_id')
-            
-#             if selected_address_id is not None:
-#                 selected_address = Address.objects.get(pk=selected_address_id)
-#                 data.selected_address = selected_address
-#                 del request.session['selected_address_id']
-#             else:
-#                 selected_address_id = request.POST.get('selected_address')
-#                 if selected_address_id is None:
-#                     messages.error(request,'choose an address or add address')  
-#                     return redirect('app1:checkout')
-#                 else:
-
-#                  selected_address = Address.objects.get(pk=selected_address_id)
-                
-#                  data.selected_address = selected_address
-
-            
-#             data.save()
-            
-#             # yr = int(datetime.date.today().strftime('%Y'))
-#             # dt = int(datetime.date.today().strftime('%d'))
-#             # mt = int(datetime.date.today().strftime('%m'))
-#             # d = datetime.date(yr, mt, dt)
-#             # current_date = d.strftime("%Y%m%d")
-#             # order_number = current_date + str(data.id)
-#             # data.order_number = order_number
-#             # data.save()
-
-#             from datetime import datetime
-
-#             yr = datetime.now().year
-#             dt = datetime.now().day
-#             mt = datetime.now().month
-
-#             d = datetime(yr, mt, dt)
-#             current_date = d.strftime("%Y%m%d")
-#             order_number = current_date + str(data.id)
-#             data.order_number = order_number
-#             data.save()
-  
-
-#             #Remove the coupon_discount from the session
-#             if 'coupon_discount' in request.session:
-                
-#                 cp=request.session.get('coupon_code')
-#                 ns=Coupon.objects.get(code=cp)
-
-#                 reddemcoupon= RedeemedCoupon(
-#                     coupon=ns,
-#                     user=request.user,
-#                     redeemed_date=current_date,
-#                     is_redeemed=False,
-#                 )  
-                 
-#                 reddemcoupon.save()
-
-#             order = Order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
-#             selected_address = order.selected_address
-#             context = {
-#                 'order' : order,
-#                 'cart_items' : cart_items,
-#                 'total' : total,
-#                 'tax' : tax,
-#                 'final_total' : final_total,
-#                 'selected_address': selected_address,
-#             }
-#             return render(request, 'app1/payment.html', context)
-#         else:
-#             return redirect('app1:checkout')
-
-
-
-# new code
-        
-
-
-
-
-# till here
-
-
-# def paytment(request):
-#    if request.method == 'POST':
-#         print(request.POST)
-#         action = request.POST.get('action')
-#         selected_address_id = request.POST.get('selected_address')
-#         grand_total = request.POST.get('grand_total')
-#         print(grand_total)
-#         order_number = request.POST.get('order_number')
-#         print(order_number)  
-        
-#         try:
-#             order = Order.objects.get(order_number=order_number, is_ordered=False)
-#         except Order.DoesNotExist:
-            
-#             return HttpResponse("Order not found")
-
-#         if action == "Cash on Delivery":
-#             print('action is done')
-#             payment = Payment.objects.create(
-#                 user=request.user,
-#                 payment_method="Cash on Delivery",  
-#                 amount_paid=grand_total,  
-#                 status="Pending",  
-#             )
-
-            
-#             order.payment = payment
-#             order.save()
-            
-
-
-
-
-#             new_address = orderAddress(
-#                 user=request.user,  # Replace 'username' with the field you use to identify users
-#                 address_type=order.selected_address.address_type, 
-#                 first_name=order.selected_address.first_name,
-#                 last_name=order.selected_address.last_name,
-#                 email=order.selected_address.email,
-#                 phone=order.selected_address.phone,
-#                 address_line_1=order.selected_address.address_line_1,
-#                 address_line_2=order.selected_address.address_line_2,
-#                 city=order.selected_address.city,
-#                 state=order.selected_address.state,
-#                 postal_code=order.selected_address.postal_code,
-#                 country=order.selected_address.country,
-#                 is_active=True
-#             )
-
-#             # Save the new address to the database
-#             new_address.save()
-      
-#             order.address = new_address
-#             order.save()
-           
-
-
-            
-            
-
-#             cp=request.session.get('coupon_code')
-#             if cp is not None:
-#              ns=Coupon.objects.get(code=cp)
-#              reddemcoupon= RedeemedCoupon.objects.filter(user=request.user,coupon=ns,is_redeemed=False)
-#              reddemcoupon.is_redeemed=True
-#              reddemcoupon.update(is_redeemed=True)
-#              del request.session['coupon_code']
-            
-             
-             
-
-            
-#             cart_items = CartItem.objects.filter(user=request.user, is_active=True)
-            
-#       # Access the related varients instance
-#      # Update the stock for the varients
-        
-#             for item in cart_items:
-#                 orderproduct = OrderProduct()
-#                 item.variations.stock_count-=item.quantity
-#                 item.variations.save()
-#                 orderproduct.order = order
-#                 orderproduct.payment = payment
-#                 orderproduct.user = request.user
-#                 orderproduct.product = item.product
-#                 orderproduct.quantity = item.quantity
-#                 orderproduct.product_price = item.variations.price
-#                 orderproduct.ordered = True
-#                 orderproduct.color = item.variations.color
-#                 orderproduct.save()
-
-
-#                     # Update the product's quantity or perform any other necessary updates
-#             cart_items.delete()
-            
-            
-#             return redirect("app1:order_success", id=order.id) 
-#         else:
-#             return render(request, 'app1/payment.html')
         
      
 
@@ -1124,9 +823,9 @@ def paytment(request):
         action = request.POST.get('action')
         selected_address_id = request.POST.get('selected_address')
         grand_total = request.POST.get('grand_total')
-        print(grand_total)
+        
         order_number = request.POST.get('order_number')
-        print(order_number)  
+          
         
         try:
             order = Order.objects.get(order_number=order_number, is_ordered=False)
@@ -1191,9 +890,7 @@ def paytment(request):
 
             
             cart_items = CartItem.objects.filter(user=request.user, is_active=True)
-            
-      # Access the related varients instance
-     # Update the stock for the varients
+      
         
             for item in cart_items:
                 orderproduct = OrderProduct()
@@ -1210,7 +907,7 @@ def paytment(request):
                 orderproduct.save()
 
 
-                    # Update the product's quantity or perform any other necessary updates
+                    
             cart_items.delete()
             
             
@@ -1229,7 +926,7 @@ def paytment(request):
 @login_required(login_url='userauths:sign-in')
 def profile(request):
     user = request.user
-    print(user)
+    
     wallet_amt = wallet.objects.filter(user=request.user)
     user_profile=Account.objects.get(email=request.user)
     if not wallet_amt.exists():
@@ -1250,7 +947,7 @@ def profile(request):
 @login_required(login_url='userauths:sign-in')
 def user_orders(request,):
     orders = Order.objects.filter(is_ordered=True, user=request.user).order_by('-created_at')
-    print(orders)
+   
    
     context = {
         'orders': orders,
@@ -1500,20 +1197,20 @@ def cancel_order_product(request, order_id):
                         user=request.user,
                         Wallet=wallets,
                         status="Credited",
-                        amount=order.order_total,  # Replace with the actual amount
-                        created_at=datetime.now()  # Replace with the actual date/time
+                        amount=order.order_total,
+                        created_at=datetime.now()  
                     )
 
                     # Save the transaction to the database
         transaction.save()
 
 
-        print("CHECK")
+        
         order_products = OrderProduct.objects.filter(order=order)
         for order_product in order_products:
             products = order_product.product.pid
             product=Product.objects.get(pid=products)
-            print(product)
+            
 
             
             product_variants = ProductVariant.objects.filter(product=product)
@@ -1580,7 +1277,7 @@ def return_order(request, order_id):
         messages.warning(request, 'Return request has been sent.')
 
     else:
-        # Handle other cases where order.payment is None
+        
         raise Http404("Invalid order")
 
     return redirect('app1:user_dashboard')
@@ -1609,8 +1306,9 @@ def calculate_final_total(cart_items, grand_total):
 
 
 
-
+@login_required(login_url='userauths:sign-in')
 def wallet_details(request):
+    # if not request.user 
     try:
         wallet_instance = wallet.objects.get(user=request.user)
     except wallet.DoesNotExist:
@@ -1689,18 +1387,15 @@ def pay_wallet_details(request, order_number, order_total):
                     quantity += cart_item.quantity
                 tax = (2 * total) / 100
 
-                final_total = (total + tax) - coupon_discount
-                # Here you may proceed with the wallet payment process and update the wallet balance
                 
-                # Assuming the payment process is successful
                 order.is_ordered = True
                 order.save()
                 
-                # Redirect to the order success page
+                
                 return redirect("app1:order_sucess", id=order.id)
                 
     else:
-        # Handle the GET request case
+        
         return HttpResponse("Invalid request method")
     
 def abc():
@@ -1709,91 +1404,6 @@ def dfs():
     pass   
 
 
-# def pay_wallet_details(request, order_number, order_total):
-#     grand_total = order_total
-#     order_number = order_number
-
-#     if request.method == 'POST':
-#         action = request.POST.get('action')
-#         grand_total = request.POST.get('grand_total')
-#         order_number = request.POST.get('order_number')
-#         print(order_number)
-
-#         try:
-#             wallets = wallet.objects.get(user=request.user)
-#         except wallet.DoesNotExist:
-#             wallets = wallet.objects.create(user=request.user, wallet_amount=0)
-#             wallets.save()
-
-#         if wallets.wallet_amount <= float(grand_total):
-#             messages.error(request, 'Wallet balance is less than the total amount')
-#             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-#         try:
-#             order = Order.objects.get(order_number=order_number, is_ordered=False)
-#         except Order.DoesNotExist:
-#             return HttpResponse("Order not found")
-
-#         cart_items = CartItem.objects.filter(user=request.user)
-#         selected_address_id = request.session.get('selected_address_id')
-
-#         if selected_address_id is not None:
-#             selected_address = Address.objects.get(pk=selected_address_id)
-#             del request.session['selected_address_id']
-#         else:
-#             selected_address_id = request.POST.get('selected_address')
-#             if selected_address_id is None:
-#                 messages.error(request, 'Choose an address or add address')
-#                 return redirect('app1:checkout')
-#             else:
-#                 selected_address = Address.objects.get(pk=selected_address_id)
-#                 coupon_discount = request.session.get('coupon_discount', 0)
-#                 final_total = 0
-#                 quantity = 0
-#                 total = 0
-#                 tax = 0
-#                 for cart_item in cart_items:
-#                     total += (cart_item.product.price * cart_item.quantity)
-#                     quantity += cart_item.quantity
-#                 tax = (2 * total) / 100
-
-#                 final_total = (total + tax) - coupon_discount
-#                 context = {
-#                     'order': order,
-#                     'cart_items': cart_items,
-#                     'total': total,
-#                     'tax': tax,
-#                     'coupon_discount': coupon_discount,
-#                     'final_total': final_total,
-#                     'selected_address': selected_address,
-#                     'action':action,
-#                 }
-#                 return render(request, 'app1/payment.html', context)
-                
-#     else:
-#         # Handle the GET request case
-#         return HttpResponse("Invalid request method")
-
-#     # If the request method is POST and the above conditions are not met,
-#     # this means the payment process has been successfully completed,
-#     # and a redirect response should be returned.
-#     return redirect("app1:order_success", id=order.id)
-
-        
-# def search_view(request):
-#     query =request.GET.get('q')
-#     print(query)
-    
-#     products =Product.objects.filter(title__icontains =query)
-#     print(products)
-    
-#     context ={
-#         'products':products,
-#         'query': query
-        
-#     }
-    
-#     return render(request,'app1/search.html',context)
 
 
 def confirm_razorpay_payment(request, order_number):
@@ -1834,7 +1444,7 @@ def confirm_razorpay_payment(request, order_number):
                 is_active=True
             )
 
-            # Save the new address to the database
+            
     new_address.save()
       
     order.address = new_address
@@ -1854,9 +1464,7 @@ def confirm_razorpay_payment(request, order_number):
 
             
     cart_items = CartItem.objects.filter(user=request.user, is_active=True)
-            
-      # Access the related varients instance
-     # Update the stock for the varients
+      
     for item in cart_items:
                 orderproduct = OrderProduct()
                 item.variations.stock_count-=item.quantity
@@ -1872,7 +1480,7 @@ def confirm_razorpay_payment(request, order_number):
                 orderproduct.save()
 
 
-                # Update the product's quantity or perform any other necessary updates
+                
     cart_items.delete()
            
     return redirect("app1:order_sucess", id=order.id)
@@ -1897,7 +1505,7 @@ def order_success(request, id):
 @login_required(login_url='userauths:sign-in')
 def add_wishList(request,pid):
     product = get_object_or_404(Product, pid=pid)
-    print(product)
+    
 
     try:
         vs = WishList.objects.get(user=request.user, product=product)
@@ -1915,7 +1523,7 @@ def add_wishList(request,pid):
 @login_required(login_url='userauths:sign-in')
 def wishlist(request):
     wishlist=WishList.objects.filter(user=request.user)
-    print(wishlist)
+    
     context={
         'wishlist':wishlist
     }
@@ -1924,12 +1532,12 @@ def wishlist(request):
 
 @login_required(login_url='userauths:sign-in')
 def remove_from_wishlist(request, pid):
-    print(pid,'hai')
+    print(pid)
     if request.method == 'POST' or request.method == 'DELETE':
         product = get_object_or_404(Product, pid=pid)
         wishlist_item = get_object_or_404(WishList, user=request.user, product=product)
 
-        # Assuming you have a method to remove the item from the wishlist
+       
         wishlist_item.delete()
 
         return JsonResponse({'success': True})
@@ -1940,7 +1548,7 @@ from django.utils import timezone
 
 
 def search(request):
-    q = request.GET.get('q', '')  # Use get() method to handle cases where 'q' parameter is not present
+    q = request.GET.get('q', '')  
 
     try:
         discount_offer = ProductOffer.objects.get(active=True)
@@ -1973,48 +1581,7 @@ def search(request):
 
 
 
-# def search(request):
-#     q=request.GET['q']
-#     try:
-#         discount_offer = ProductOffer.objects.get(active=True)
-#     except ProductOffer.DoesNotExist:
-#         discount_offer = None
-#     if discount_offer:
-#         current_date = timezone.now()
-#         if current_date > discount_offer.end_date or current_date < discount_offer.start_date:
-#             discount_offer.active = False
-#             discount_offer.save()
-#     try:
-        
-#         discounted_offer = CategoryOffer.objects.filter(active=True)
-#     except ProductOffer.DoesNotExist:
-#         discounted_offer = None
-#     if discounted_offer:
-#         for dis in discounted_offer:
-#             products_with_discount = Product.objects.filter(category=dis.category, is_available=True)
-#             current_date = timezone.now()
-#             if current_date > dis.end_date or current_date < dis.start_date:
-#                 dis.active = False
-#                 dis.save()
-#     data = Product.objects.filter(title__icontains=q).order_by('-id')
-#     return render(request,'app1/search.html',{'data':data,"discount_offer":discount_offer,"discounted_offer":discounted_offer,})    
-
-
-
-# def search(request):
-#     query =request.GET.get('q')
-#     print(query)
-    
-#     products =Product.objects.filter(title__icontains =query)
-#     print(products)
-    
-#     context ={
-#         'products':products,
-#         'query': query
-        
-#     }
-    
-#     return render(request,'app1/search.html',context)                
+         
 
 
 def referral_coupon(request):
@@ -2022,9 +1589,9 @@ def referral_coupon(request):
     if request.method == 'POST':
         
         code= request.POST.get("referral_code")
-        print("hello1234")
+       
         try:
-            # ref_code = UserDetails.objects.filter(code=code)
+            
             ref_user_details = get_object_or_404(Account, code=code)
             
             print(f'ghjhgjhg{ref_user_details.email}')
@@ -2059,23 +1626,23 @@ def referral_coupon(request):
     
             referral_user.wallet_amount += 200
             referral_user.save()
-            print(referral_user)
+            
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
         
 
 
-# 
+ 
 from django.shortcuts import get_object_or_404, render
 from .models import Order, OrderProduct
 
 def invoice(request, order_id):
-    # Retrieve the order or return a 404 page if it doesn't exist
+    
     order = get_object_or_404(Order, id=order_id)
     
-    # Fetch order products related to the specific order
+    
     order_products = OrderProduct.objects.filter(order=order)
     
-    # Calculate total price for all order products
+    
     total_price = sum(item.quantity * item.product_price for item in order_products)
     
     context = {
