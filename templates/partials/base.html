@@ -296,7 +296,7 @@
             <div class="container">
                 <div class="header-wrap header-space-between position-relative">
                     <div class="logo logo-width-1 d-block d-lg-none">
-                        <a href="index.html"><img src="{% static 'assets/imgs/theme/logo.svg' %}" alt="logo"></a>
+                        <a href="{% url 'app1:index' %}"><img src="{% static 'assets/imgs/theme/logo.svg' %}" alt="logo"></a>
                     </div>
                     <div class="header-nav d-none d-lg-flex">
                         <div class="main-categori-wrap d-none d-lg-block">
@@ -602,8 +602,8 @@
                         <div class="header-action-2">
                             <div class="header-action-icon-2">
                                 <a href="{% url 'app1:wishlist' %}">
-                                    <img alt="Evara" src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}">
-                                    <span class="pro-count white">4</span>
+                                    <a href="index.html"><img src="{% static 'assets/imgs/theme/Logo11.png' %}" alt="Groove Head"></a>
+                                    <span class="pro-count white">1</span>
                                 </a>
                             </div>
                             <div class="header-action-icon-2">
@@ -911,14 +911,14 @@
             <div class="col-12 mb-20">
                 <div class="footer-bottom"></div>
             </div>
-            <div class="col-lg-6">
+            <!-- <div class="col-lg-6">
                 <p class="float-md-left font-sm text-muted mb-0">&copy; 2021, <strong class="text-brand">Evara</strong> - HTML Ecommerce Template </p>
             </div>
             <div class="col-lg-6">
                 <p class="text-lg-end text-start font-sm text-muted mb-0">
                     Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights reserved
                 </p>
-            </div>
+            </div> -->
         </div>
     </div>
 </footer>

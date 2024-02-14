@@ -530,7 +530,7 @@ def add_coupon(request):
         if form.is_valid():
             form.save()
             return redirect('admin_panel:list_coupons') 
-        form = CouponForm()
+    form = CouponForm()
     
     return render(request, 'admin_panel/add coupons.html', {'form': form})
 

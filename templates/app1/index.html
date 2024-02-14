@@ -34,7 +34,7 @@
                     </div>
                 </div>
         
-                <div class="single-hero-slider single-animation-wrap">
+                <!-- <div class="single-hero-slider single-animation-wrap">
                     <div class="container">
                         <div class="row align-items-center slider-animated-1">
                             <div class="col-lg-5 col-md-6">
@@ -53,8 +53,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="single-hero-slider single-animation-wrap">
+                </div> -->
+                <!-- <div class="single-hero-slider single-animation-wrap">
                     <div class="container">
                         <div class="row align-items-center slider-animated-1">
                             <div class="col-lg-5 col-md-6">
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 {% endfor %}
             </div>
             <div class="slider-arrow hero-slider-1-arrow"></div>
@@ -149,19 +149,19 @@
                                         </div>
                                         {% if discount_offer is not None and discount_offer.active %}
                                             <div class="product-price">
-                                                <span class="current-product-price-{{p.id}}">{{p.price}}</span>
-                                                <span class="old-price">{{p.old_price}}</span>
+                                                <span class="current-product-price-{{p.id}}">₹{{p.price}}</span>
+                                                <span class="old-price">₹{{p.old_price}}</span>
                                             </div>
                                         {% elif discounted_offer %}
                                             {% for dis in discounted_offer %}
                                                 {% if dis.active and dis.category == p.category %}
                                                     <div class="product-price">
-                                                        <span>₹ <span class="current-product-price-{{p.id}}">{{p.price}}</span></span>
-                                                        ₹<span class="old-price">{{p.old_price}}</span>
+                                                        <span>₹ <span class="current-product-price-{{p.id}}">₹{{p.price}}</span></span>
+                                                        ₹<span class="old-price">₹{{p.old_price}}</span>
                                                     </div>
                                                     {% else %}
                                                     <div class="product-price">
-                                                        <span>₹ <span class="current-product-price-{{p.id}}">{{p.price}}</span></span>
+                                                        <span>₹ <span class="current-product-price-{{p.id}}">₹{{p.price}}</span></span>
                                                     
                                                     </div>
                                                 {% endif %}
@@ -1195,19 +1195,19 @@
                                 </div>
                                 {% if discount_offer is not None and discount_offer.active %}
                                 <div class="product-price">
-                                    <span>{{p1.price}} </span>
-                                    <span class="old-price">{{p1.old_price}}</span>
+                                    <span>₹{{p1.price}} </span>
+                                    <span class="old-price">₹{{p1.old_price}}</span>
                                 </div>
                                 {% elif discounted_offer %}
                                                 {% for dis in discounted_offer %}
                                                     {% if dis.active and dis.category == p.category %}
                                                         <div class="product-price">
-                                                            <span>₹ <span class="current-product-price-{{p.id}}">{{l.price}}</span></span>
+                                                            <span>₹ <span class="current-product-price-{{p.id}}">₹{{l.price}}</span></span>
                                                              $<span class="old-price">{{l.old_price}}</span>
                                                         </div>
                                                         {% else %}
                                                         <div class="product-price">
-                                                            <span>₹ <span class="current-product-price-{{p.id}}">{{l.price}}</span></span>
+                                                            <span>₹ <span class="current-product-price-{{p.id}}">₹{{l.price}}</span></span>
                                                             
                                                         </div>
                                                     {% endif %}
@@ -1215,7 +1215,7 @@
                                             {% else %}
                                                 <div>
                                                     <span style="font-size: large;">
-                                                        ₹<span class="current-product-price-{{p.id}} text-success" style="font-weight: bold;">{{l.price}}</span>
+                                                        ₹<span class="current-product-price-{{p.id}} text-success" style="font-weight: bold;">₹{{l.price}}</span>
                                                     </span>
                                                 </div>
                                             {% endif %}
@@ -1234,8 +1234,8 @@
         </section>
         <section class="section-padding">
             <div class="container">
-                <h3 class="section-title mb-20 wow fadeIn animated"><span>Featured</span> Brands</h3>
-                <div class="carausel-6-columns-cover position-relative wow fadeIn animated">
+                <!-- <h3 class="section-title mb-20 wow fadeIn animated"><span>Featured</span> Brands</h3> -->
+                <!-- <div class="carausel-6-columns-cover position-relative wow fadeIn animated">
                     <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-3-arrows"></div>
                     <div class="carausel-6-columns text-center" id="carausel-6-columns-3">
                         <div class="brand-logo">
@@ -1260,7 +1260,7 @@
                             <img class="img-grey-hover" src="{% static 'assets/imgs/banner/brand-3.png' %}" alt="">
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </section>
         <section class="bg-grey-9 section-padding">
@@ -1350,19 +1350,19 @@
                                                 </div>
                                                 {% if discount_offer is not None and discount_offer.active %}
                                                 <div class="product-price">
-                                                    <span>{{p.price}} </span>
-                                                    <span class="old-price">{{p.old_price}}</span>
+                                                    <span>₹{{p.price}} </span>
+                                                    <span class="old-price">₹{{p.old_price}}</span>
                                                 </div>
                                                 {% elif discounted_offer %}
                                                 {% for dis in discounted_offer %}
                                                     {% if dis.active and dis.category == p.category %}
                                                     <div class="product-price">
-                                                        <span>{{p.price}} </span>
-                                                        <span class="old-price">{{p.old_price}}</span>
+                                                        <span>₹{{p.price}} </span>
+                                                        <span class="old-price">₹{{p.old_price}}</span>
                                                     </div>
                                                     {% else %}
                                                         <div class="product-price">
-                                                            <span>₹ <span class="current-product-price-{{p.id}}">{{p.price}}</span></span>
+                                                            <span>₹ <span class="current-product-price-{{p.id}}">₹{{p.price}}</span></span>
                                                             
                                                         </div>
                                                     {% endif %}
@@ -1370,7 +1370,7 @@
                                             {% else %}
                                                 <div>
                                                     <span style="font-size: large;">
-                                                        ₹<span class="current-product-price-{{p.id}} text-success" style="font-weight: bold;">{{p.price}}</span>
+                                                        ₹<span class="current-product-price-{{p.id}} text-success" style="font-weight: bold;">₹{{p.price}}</span>
                                                     </span>
                                                 </div>
                                             {% endif %}

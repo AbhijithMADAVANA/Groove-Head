@@ -29,10 +29,10 @@
                                             <span><i class="fi-rs-apps"></i>Show:</span>
                                         </div>
                                         <div class="sort-by-dropdown-wrap">
-                                            <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                                            <span> {{product.count}} <i class="fi-rs-angle-small-down"></i></span>
                                         </div>
                                     </div>
-                                    <div class="sort-by-dropdown">
+                                    <!-- <div class="sort-by-dropdown">
                                         <ul>
                                             <li><a class="active" href="#">50</a></li>
                                             <li><a href="#">100</a></li>
@@ -40,7 +40,7 @@
                                             <li><a href="#">200</a></li>
                                             <li><a href="#">All</a></li>
                                         </ul>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="sort-by-cover">
                                     <div class="sort-by-product-wrap">
@@ -76,9 +76,9 @@
                                             </a>
                                         </div>
                                         <div class="product-action-1">
-                                            <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                            <!-- <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a> -->
                                             <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                            <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                            <!-- <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> -->
                                         </div>
                                     {% if discount_offer is not None and discount_offer.active %}
                                         <div class="product-badges product-badges-position product-badges-mrg">
@@ -114,19 +114,19 @@
                                         </div>
                                         {% if discount_offer is not None and discount_offer.active %}
                                         <div class="product-price">
-                                            <span >{{ p.price }} </span>
-                                            <span class="old-price">{{ p.old_price}}</span>
+                                            <span >₹{{ p.price }} </span>
+                                            <span class="old-price">₹{{ p.old_price}}</span>
                                         </div>
                                         {% elif discounted_offer %}
                                         {% for dis in discounted_offer %}
                                             {% if dis.active and dis.category == p.category %}
                                                 <div class="product-price">
-                                                    <span >{{ p.price }} </span>
-                                                    <span class="old-price">{{ p.old_price}}</span>
+                                                    <span >₹{{ p.price }} </span>
+                                                    <span class="old-price">₹{{ p.old_price}}</span>
                                                 </div>
                                                 {% else %}
                                                 <div class="product-price">
-                                                    <span>$ <span class="current-product-price-{{p.id}}">{{p.price}}</span></span>
+                                                    <span>$ <span class="current-product-price-{{p.id}}">₹{{p.price}}</span></span>
                                                     
                                                 </div>
                                             {% endif %}
@@ -134,7 +134,7 @@
                                     {% else %}
                                         <div>
                                             <span style="font-size: large;">
-                                                $<span class="current-product-price-{{p.id}} text-success" style="font-weight: bold;">{{p.price}}</span>
+                                                $<span class="current-product-price-{{p.id}} text-success" style="font-weight: bold;">₹{{p.price}}</span>
                                             </span>
                                         </div>
                                     {% endif %}
@@ -166,7 +166,7 @@
                             <div class="col-lg-12 col-mg-6"></div>
                             <div class="col-lg-12 col-mg-6"></div>
                         </div>
-                        <div class="widget-category mb-30">
+                        <!-- <div class="widget-category mb-30">
                             <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
                             <ul class="categories">
                                 <li><a href="shop-grid-right.html">Shoes & Bags</a></li>
@@ -177,14 +177,14 @@
                                 <li><a href="shop-grid-right.html">Jewelry & Watch</a></li>
                                 <li><a href="shop-grid-right.html">Accessories</a></li>
                             </ul>
-                        </div>
+                        </div> -->
                         <!-- Fillter By Price -->
                         <div class="sidebar-widget price_range range mb-30">
                             <div class="widget-header position-relative mb-20 pb-10">
-                                <h5 class="widget-title mb-10">Fill by price</h5>
+                                <!-- <h5 class="widget-title mb-10">Fill by price</h5> -->
                                 <div class="bt-1 border-color-1"></div>
                             </div>
-                            <div class="price-filter">
+                            <!-- <div class="price-filter">
                                 <div class="price-filter-inner">
                                     <div id="slider-range"></div>
                                     <div class="price_slider_amount">
@@ -193,8 +193,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="list-group">
+                            </div> -->
+                            <!-- <div class="list-group">
                                 <div class="list-group-item mb-10 mt-10">
                                     <label class="fw-900">Color</label>
                                     <div class="custome-checkbox">
@@ -219,7 +219,7 @@
                                         <label class="form-check-label" for="exampleCheckbox31"><span>Used (45)</span></label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <a href="shop-grid-right.html" class="btn btn-sm btn-default"><i class="fi-rs-filter mr-5"></i> Fillter</a>
                         </div>
                         <!-- Product sidebar Widget -->
